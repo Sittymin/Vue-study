@@ -19,8 +19,8 @@
                         <input type="radio" name="sex" id="woman" value="1" required>
                         <label for="woman">女</label>
 
-
-                        <input type="email" name="email">
+                        <input type="email" name="email" placeholder="邮箱">
+                        <input type="text" name="idCard" placeholder="身份证">
                     </div>
                 </div>
             </div>
