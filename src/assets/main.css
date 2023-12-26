@@ -1,0 +1,9 @@
+@import url("./button.css");
+@import url("./images.css");
+
+
+body {
+  background-color: #24273a;
+  transition: 0.5s;
+}
+
