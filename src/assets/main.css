@@ -1,9 +1,54 @@
 @import url("./button.css");
-@import url("./images.css");
 
+
+* {
+  margin: 0;
+  padding: 0;
+}
 
 body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #24273a;
+}
+
+.container {
+  background-color: #363a4f;
+  width: 1000px;
+  height: 500px;
+  border-radius: 20px;
+  position: relative;
+}
+
+.container:hover {
+  box-shadow: 0 0 30px #181926;
   transition: 0.5s;
 }
 
+.formbox {
+  position: absolute;
+  top: -10%;
+  left: 5%;
+; background-color: #494d64;
+  width: 45%;
+  height: 120%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.register, .login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+
+.hidden {
+  display: none;
+}

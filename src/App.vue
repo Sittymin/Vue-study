@@ -7,8 +7,8 @@
         <main>
             <div class="container">
                 <div class="formbox">
-                    <div class="register">
-                        <h1>register</h1>
+                    <div class="register hidden">
+                        <h1>注册</h1>
                         <input type="text" name="userName" placeholder="用户名" required>
                         <input type="text" name="nickName" placeholder="昵称">
                         <input type="password" name="password" placeholder="密码" required>
@@ -21,8 +21,26 @@
 
                         <input type="email" name="email" placeholder="邮箱">
                         <input type="text" name="idCard" placeholder="身份证">
+                        <button>注册</button>
+                    </div>
+                    <div class="login">
+                        <h1>登录</h1>
+                        <input type="text" name="username" placeholder="用户名" required>
+                        <input type="password" name="password" placeholder="密码" required>
+                        <button>登录</button>
                     </div>
                 </div>
+                <div class="box-left">
+                    <h2>欢迎来到智慧城市管理系统</h2>
+                    <p>已有账号</p>
+                    <button id="login">去登录</button>
+                </div>
+                <div class="box-right">
+                    <h2>欢迎回到智慧城市管理系统</h2>
+                    <p>没有账号</p>
+                    <button id="register">去注册</button>
+                </div>
+
             </div>
         </main>
     </div>
