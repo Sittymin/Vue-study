@@ -54,6 +54,7 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 2;
+  transition: 1s;
 }
 
 .register, .login {
@@ -155,4 +156,20 @@ input:focus::placeholder {
   color: #363a4f;
   background-color: #cad3f5;
   transition: 0.5s;
+  cursor: pointer;
 }
+
+.sex {
+  display: flex;
+  align-items: center;
+  color: #cad3f5;
+  margin-top: 10px;
+}
+
+
+.sex input {
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+}
+
