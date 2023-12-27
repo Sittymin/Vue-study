@@ -1,5 +1,3 @@
-@import url("./button.css");
-
 
 * {
   margin: 0;
@@ -21,11 +19,28 @@ body {
   border-radius: 20px;
   position: relative;
 }
-
-.container:hover {
-  box-shadow: 0 0 30px #181926;
-  transition: 0.5s;
+/* 渐变边缘 */
+.container::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  z-index: -1;
+  border-radius: 20px;
+  background: linear-gradient(to right top, #a6da95, #c6a0f6, #8aadf4);
+  pointer-events: none;
 }
+.container::after {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  z-index: -1;
+  border-radius: 20px;
+  background: linear-gradient(to right top, #a6da95, #c6a0f6, #8aadf4);
+  filter: blur(20px);
+}
+
+
+
 
 .formbox {
   position: absolute;
@@ -51,4 +66,93 @@ body {
 
 .hidden {
   display: none;
+}
+h1, h2, p {
+  color: #cad3f5;
+}
+
+h1 {
+  margin-bottom: 30px;
+}
+
+input {
+  background-color: transparent;
+  border: none;
+  width: 63%;
+  border-bottom: #cad3f5 3px solid;
+  border-radius: 5px;
+  padding: 10px 0px;
+  margin: 8px 0px;
+  letter-spacing: 2px;
+  font-size: 15px;
+  text-indent: 2em;
+}
+
+input::placeholder {
+  color: #cad3f5;
+}
+
+input:focus {
+  outline: none;
+  border-bottom: #c6a0f6 3px solid;
+  transition: 0.5s;
+}
+input:focus::placeholder {
+  opacity: 0;
+}
+
+.formbox button {
+  width: 63%;
+  margin-top: 30px;
+  letter-spacing: 2px;
+  text-align: center;
+  color: #cad3f5;
+  background-color: #8087a2;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+.formbox button:hover {
+  color: #8087a2;
+  background-color: #cad3f5;
+  transition: 0.5s ease-out;
+}
+
+.box {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.box.left {
+  left: 0%;
+}
+.box.right {
+  right: 0%;
+}
+
+.box h2 {
+  font-size: 30px;
+  letter-spacing: 2px;
+}
+
+
+.box button {
+  color: #cad3f5;
+  background-color: transparent;
+  border: 2px solid #cad3f5;
+  border-radius: 5px;
+  outline: none;
+  padding: 10px 20px;
+  margin-top: 20%;
+}
+.box button:hover {
+  color: #363a4f;
+  background-color: #cad3f5;
+  transition: 0.5s;
 }
