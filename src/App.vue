@@ -1,27 +1,14 @@
-<script setup>
+<script setup lang="ts">
 
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 let formbox = ref(null);
 let loginbox = ref(null);
 let registerbox = ref(null);
-onMounted(() => {
-    console.log('Mounted:', loginbox.value, registerbox.value);
-});
 
 function toregister() {
-    if (formbox.value) {
-        formbox.value.style.transform = 'translateX(100%)';
-        loginbox.value.classList.add('hidden');
-        registerbox.value.classList.remove('hidden');
-    }
 }
 function tologin() {
-    if (formbox.value) {
-        formbox.value.style.transform = 'translateX(0%)';
-        registerbox.value.classList.add('hidden');
-        loginbox.value.classList.remove('hidden');
-    }
 }
 
 function login() {
@@ -52,7 +39,21 @@ function login() {
     })
 }
 function register() {
-    let submitdata = {};
+    let submitdata:{
+        avatar?: string,
+        userName: string,
+        nickName?: string,
+        password: string,
+        phonenumber: string,
+        sex: string,
+        email?: string,
+        idCard?: string
+    } = {
+        userName: '',
+        password: '',
+        phonenumber: '',
+        sex: '',
+    }
     const formdata = registerbox.value.querySelectorAll('input');
     formdata.forEach(input => {
         submitdata[input.name] = input.value;
@@ -77,15 +78,15 @@ function register() {
 <template>
     <div>
         <main>
-            <div class="container">
-                <div ref="formbox" class="formbox">
-                    <div ref="registerbox" class="register hidden">
+            <div>
+                <div ref="formbox">
+                    <div ref="registerbox">
                         <h1>注册</h1>
                         <input type="text" name="userName" placeholder="用户名" required>
                         <input type="text" name="nickName" placeholder="昵称">
                         <input type="password" name="password" placeholder="密码" required>
                         <input type="tel" name="phonenumber" placeholder="电话号码" required>
-                        <div class="sex">
+                        <div>
                             <label >性别：</label>
                             <input type="radio" name="sex" id="man" value="0" required>
                             <label for="man">男</label>
@@ -96,22 +97,21 @@ function register() {
                         <input type="text" name="idCard" placeholder="身份证">
                         <button @click="register">注册</button>
                     </div>
-                    <div ref="loginbox" class="login">
+                    <div ref="loginbox">
                         <h1>登录</h1>
                         <input type="text" name="username" placeholder="用户名" required>
                         <input type="password" name="password" placeholder="密码" required>
                         <button @click="login">登录</button>
                     </div>
                 </div>
-                <div class="box left">
+                <div>
                     <h2>欢迎来到智慧城市管理系统</h2>
                     <button id="login" @click="tologin">去登录</button>
                 </div>
-                <div class="box right">
+                <div>
                     <h2>欢迎回到智慧城市管理系统</h2>
                     <button id="register" @click="toregister">去注册</button>
                 </div>
-
             </div>
         </main>
     </div>
