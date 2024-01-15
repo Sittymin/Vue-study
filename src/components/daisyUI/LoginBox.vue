@@ -1,3 +1,7 @@
+<!-- 使用可能继承父组件的class -->
+
+
+
 <script setup lang="ts">
 import { ref } from 'vue';
 
