@@ -1,14 +1,7 @@
 <!-- 获取新闻列表 -->
 <script setup lang="ts">
     import { reactive, onMounted } from 'vue';
-import { stringifyQuery } from 'vue-router';
-    interface PressListSubmit {
-        hot?: string            //是否热点，参见字典名：系统是否
-        pusblishDate?: string,  //发布日期
-        title?: string,         //新闻标题
-        top?: string,           //是否推荐，参见字典名：系统是否
-        type?: string,          //新闻类型 id
-    }
+    import { setTheme } from '@/components/daisyUI/setTheme';
     interface PressListReturn {
         code: number,
         msg: string,
@@ -27,7 +20,6 @@ import { stringifyQuery } from 'vue-router';
         }[]
     }
 
-    const pressListSubmit:PressListSubmit = reactive({})
     const pressListReturn:PressListReturn = reactive({
         code: 0,
         msg: '',
@@ -52,27 +44,26 @@ import { stringifyQuery } from 'vue-router';
             headers: {
                 "content-type": "application/x-www-form-urlencoded"
             },
-            // body: JSON.stringify(pressListSubmit)
         })
         .then(res => res.json())
         .then(data => {
             Object.assign(pressListReturn, data)
-            // console.log("获取成功" + JSON.stringify(pressListReturn))
         })
         .catch(err => {
             alert("新闻列表请求失败" + JSON.stringify(err));
-        })
+        });
     })
 </script>
 
 <template>
     <div class="hero h-68 flex-col" v-for="(row, index) of pressListReturn.rows" :key="index">
-        <div class="hero-content border-4 border-slate-300 hover:border-indigo-300 bg-slate-200 dark:hover:border-indigo-700 dark:bg-slate-800 dark:border-slate-600 w-full my-4 mr-4 p-6 rounded-lg justify-between">
+        <div v-if="row.cover" class="hero-content border-4 border-slate-300 hover:border-indigo-300 bg-slate-200 dark:hover:border-indigo-700 dark:bg-slate-800 dark:border-slate-600 w-full my-4 mr-4 p-6 rounded-lg justify-between">
+            <!-- 左部分 -->
             <div class="flex flex-row">
-                <img v-if="row.cover" :src="'http://172.30.179.248:10001' + row.cover" class="h-52 rounded-lg shadow-2xl" />
-                <span v-else class="loading loading-infinity loading-lg"></span>
+                <img :src="'http://172.30.179.248:10001' + row.cover" class="h-52 rounded-lg shadow-2xl" />
                 <h1 class="text-5xl font-bold">{{ row.title }}</h1>
             </div>
+            <!-- 右部分 -->
             <div class="flex flex-col">
                 <p class="py-6">
                     <div class="flex flex-row justify-between">
@@ -90,9 +81,13 @@ import { stringifyQuery } from 'vue-router';
                         </div>
                     </div>
                 </p>
-                <RouterLink to="/daisyui/read" class="btn btn-primary">阅读</RouterLink>
+                <RouterLink :to="{ path: '/daisyui/read', query:{title: row.title }}" class="btn btn-primary">阅读</RouterLink>
             </div>
         </div>
-        <div class="divider"></div>
+        <!-- 加载占位符 -->
+        <div v-else class="flex flex-col h-68 w-full items-center">
+            <div class="skeleton w-4/5 h-52 rounded-lg my-4"></div>
+            <div class="skeleton w-4/5 h-52 rounded-lg my-4"></div>
+        </div>
     </div>
 </template>
