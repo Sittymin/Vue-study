@@ -12,10 +12,9 @@ export default {
     require("daisyui")
   ],
   daisyui: {
-
     themes: [
-      "light",
-      "dark"
+      "dark",
+      "light"
     ]
   },
   variants: {

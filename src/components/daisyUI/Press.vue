@@ -57,7 +57,7 @@
 
 <template>
     <div class="hero h-68 flex-col" v-for="(row, index) of pressListReturn.rows" :key="index">
-        <div v-if="row.cover" class="hero-content border-4 border-slate-300 hover:border-indigo-300 bg-slate-200 dark:hover:border-indigo-700 dark:bg-slate-800 dark:border-slate-600 w-full my-4 mr-4 p-6 rounded-lg justify-between">
+        <div v-if="row.title" class="hero-content border-4 border-slate-300 hover:border-indigo-300 bg-slate-200 dark:hover:border-indigo-700 dark:bg-slate-800 dark:border-slate-600 w-full my-4 mr-4 p-6 rounded-lg justify-between">
             <!-- 左部分 -->
             <div class="flex flex-row">
                 <img :src="'http://172.30.179.248:10001' + row.cover" class="h-52 rounded-lg shadow-2xl" />
