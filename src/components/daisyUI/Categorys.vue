@@ -28,7 +28,7 @@
         .then(res => res.json())
         .then(data => {
             Object.assign(categorys, data);
-            console.log("新闻分类请求成功" + JSON.stringify(data));
+            // console.log("新闻分类请求成功" + JSON.stringify(data));
         })
         .catch(err => {
             alert("新闻分类请求失败" + JSON.stringify(err));

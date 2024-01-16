@@ -1,12 +1,25 @@
-<!-- 使用可能继承父组件的class -->
-
-
-
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
-let loginbox = ref<HTMLDivElement | null>(null);
+import { defineEmits } from 'vue';
+
+interface Emits {
+    (event: 'ReturnToken', returntoken: string): void;
+    (event: 'close'): void;
+}
+
+let loginbox = ref<HTMLDialogElement | null>(null);
 let errorbox = ref<HTMLDialogElement | null>(null);
+
+const emit: Emits = defineEmits()
+
+const LoginBoxClose = () => {
+    emit('close')
+}
+
+function returnToken(token: string) {
+    emit("ReturnToken", token)
+}
 
 function showErrorBox() {
     if (errorbox.value) {
@@ -45,7 +58,14 @@ function login() {
             })
                 .then(res => res.json())
                 .then(data => {
-                    alert("请求成功" + JSON.stringify(data))
+                    if (data.token != null) {
+                        returnToken(data.token);
+                        // console.log(data.token)
+                        LoginBoxClose();
+                    } else {
+// 有时间把错误框变成可以复用的组件
+                        alert("token获取失败");
+                    }
                 })
                 .catch(err => {
                     alert("请求失败" + JSON.stringify(err))
@@ -57,6 +77,12 @@ function login() {
         alert("登录框加载错误")
     }
 }
+
+onMounted(() => {
+    if (loginbox.value !== null){
+        loginbox.value.showModal();
+    }
+})
 </script>
 <template>
     <dialog ref="errorbox" class="modal">
@@ -67,30 +93,30 @@ function login() {
             <button>close</button>
         </form>
     </dialog>
-    <div ref="loginbox">
-        <button class="btn btn-sm" onclick="loginbox.showModal()">登录</button>
-        <dialog id="loginbox" class="modal">
-            <div class="modal-box max-w-xs glass">
-                <label class="form-control w-full max-w-xs">
-                    <span class="label-text">用户名</span>
-                    <input  type="text" name="username" placeholder="请输入用户名" required
-                            class="input input-bordered input-sm w-full max-w-xs">
-                    <input  type="password" name="password" placeholder="密码" required
-                            class="input input-bordered input-sm w-full max-w-xs">
-
+    <dialog ref="loginbox" class="modal">
+        <div class="modal-box max-w-xs glass">
+            <label class="form-control w-full max-w-xs">
+                <span class="label-text">用户名</span>
+                <input  type="text" name="username" placeholder="请输入用户名" required
+                        class="input input-bordered input-sm w-full mb-3">
+                <span class="label-text">密码</span>
+                <input  type="password" name="password" placeholder="密码" required
+                        class="input input-bordered input-sm w-full">
+                <span class="text-label-alt mb-3"><a>没有帐号？</a></span>
+                <div class="flex flex-row justify-end">
                     <form method="dialog">
-                        <button class="btn btn-sm"
+                        <button class="btn btn-sm" @click="LoginBoxClose"
                         >
                             关闭
                         </button>
                     </form>
                     <button @click="login"
-                            class="btn btn-sm"
+                            class="btn btn-sm mx-3"
                     >
                         登录
                     </button>
-                </label>
-            </div>
-        </dialog>
-    </div>
+                </div>
+            </label>
+        </div>
+    </dialog>
 </template>

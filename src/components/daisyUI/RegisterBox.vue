@@ -1,6 +1,13 @@
 <script setup lang="ts">
-    import { ref } from 'vue';
-    let registerbox = ref<HTMLDivElement | null>(null);
+    import { ref, onMounted, defineEmits } from 'vue';
+    let registerbox = ref<HTMLDialogElement | null>(null);
+
+    const emit = defineEmits();
+    const RegisterClose = () => {
+        emit("close")
+    }
+
+
     function register() {
         let registersubmitdata: {
             avatar?: string,    // 头像(可选)
@@ -46,6 +53,7 @@
                 .then(res => res.json())
                 .then(data => {
                     alert("请求成功" + JSON.stringify(data))
+                    RegisterClose();
                 })
                 .catch(err => {
                     alert("请求失败" + JSON.stringify(err))
@@ -57,23 +65,41 @@
             alert("注册框加载错误")
         }
     }
+    onMounted(() => {
+        if(registerbox.value !== null) {
+            registerbox.value.showModal();
+        }
+    })
 </script>
 <template>
-    <div ref="registerbox">
-        <h1>注册</h1>
-        <input type="text" name="userName" placeholder="用户名" required>
-        <input type="text" name="nickName" placeholder="昵称">
-        <input type="password" name="password" placeholder="密码" required>
-        <input type="tel" name="phonenumber" placeholder="电话号码" required>
-        <div>
-            <label>性别：</label>
-            <input type="radio" name="sex" id="man" value="0" required>
-            <label for="man">男</label>
-            <input type="radio" name="sex" id="woman" value="1" required>
-            <label for="woman">女</label>
+    <dialog ref="registerbox" class="modal">
+        <div class="modal-box max-w-xs glass">
+            <label class="form-control w-full max-w-xs">
+                <span class="flex justify-center mb-3">注册</span>
+                <input  type="text" name="userName" placeholder="用户名" required
+                        class="input input-bordered input-sm w-full mb-3">
+                <input  type="text" name="nickName" placeholder="昵称"
+                        class="input input-bordered input-sm w-full mb-3">
+                <input  type="password" name="password" placeholder="密码" required
+                        class="input input-bordered input-sm w-full mb-3">
+                <input  type="tel" name="phonenumber" placeholder="电话号码" required
+                        class="input input-bordered input-sm w-full mb-3">
+                <div class="flex flex-row content-center justify-center mb-3">
+                    <label>性别：</label>
+                    <input class="radio mx-3" type="radio" name="sex" id="man" value="0" required>
+                    <label for="man">男</label>
+                    <input class="radio mx-3" type="radio" name="sex" id="woman" value="1" required>
+                    <label for="woman">女</label>
+                </div>
+                <input  type="email" name="email" placeholder="邮箱"
+                        class="input input-bordered input-sm w-full mb-3">
+                <input  type="text" name="idCard" placeholder="身份证"
+                        class="input input-bordered input-sm w-full mb-3">
+                <div class="flex flex-row justify-end">
+                    <button class="btn btn-sm" @click="RegisterClose">关闭</button>
+                    <button class="btn btn-sm mx-3" @click="register">注册</button>
+                </div>
+            </label>
         </div>
-        <input type="email" name="email" placeholder="邮箱">
-        <input type="text" name="idCard" placeholder="身份证">
-        <button @click="register">注册</button>
-    </div>
+    </dialog>
 </template>

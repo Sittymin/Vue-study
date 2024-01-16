@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { useRoute, } from 'vue-router';
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, ref } from 'vue';
 import Bar from '@/components/daisyUI/Bar.vue'
 
+
+let token = ref<string | null>(null)
+onMounted(() => {
+    if(localStorage.getItem("localToken") !== null)
+        token.value = localStorage.getItem("localToken");
+});
 
     interface PressListReturn {
         code: number,
@@ -75,6 +81,58 @@ import Bar from '@/components/daisyUI/Bar.vue'
     const title = route.query.title;
 
 
+    function upComment () {
+        const commentTextArea = document.querySelector("#commentText") as HTMLTextAreaElement;
+        let commentText: {
+            newsId: number
+            content: string
+        } = {
+            newsId: pressListReturn.rows[0].id,
+            content: commentTextArea.value
+        };
+        console.log(commentText);
+        fetch("http://172.30.179.248:10001/prod-api/press/pressComment", {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json",
+                "Authorization": "Bearer " + token.value
+            },
+            body: JSON.stringify(commentText)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.code === 200){
+                alert("评论成功");
+                commentTextArea.value = "";
+                getComment();
+            }
+            else{
+                alert("评论失败");
+            }
+        })
+    }
+
+
+    function getComment () {
+        const queryComments = new URLSearchParams();
+        queryComments.append('newsId', String(pressListReturn.rows[0].id));
+        console.log("newsId" + pressListReturn.rows[0].id)
+        fetch(`http://172.30.179.248:10001/prod-api/press/comments/list?${queryComments.toString()}`, {
+            method: 'GET',
+            headers: {
+                "content-type": "application/x-www-form-urlencoded"
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            Object.assign(comments, data);
+        })
+        .catch(err => {
+            alert("评论请求失败");
+        })
+    }
+
+
     onMounted(() => {
         const queryParams = new URLSearchParams();
         if (title) {
@@ -90,29 +148,12 @@ import Bar from '@/components/daisyUI/Bar.vue'
         .then(res => res.json())
         .then(data => {
             Object.assign(pressListReturn, data)
-            console.log("获取成功" + JSON.stringify(pressListReturn))
+            // console.log("获取成功" + JSON.stringify(pressListReturn))
         })
         .catch(err => {
             alert("新闻请求失败");
         })
-        .then
-        (() =>//评论部分
-        {const queryComments = new URLSearchParams();
-        queryComments.append('newsId', String(pressListReturn.rows[0].id));
-        console.log("newsId" + pressListReturn.rows[0].id)
-        fetch(`http://172.30.179.248:10001/prod-api/press/comments/list?${queryComments.toString()}`, {
-            method: 'GET',
-            headers: {
-                "content-type": "application/x-www-form-urlencoded"
-            },
-        })
-        .then(res => res.json())
-        .then(data => {
-            Object.assign(comments, data);
-        })
-        .catch(err => {
-            alert("评论请求失败");
-        })})
+        .then(() => getComment())
     })
 
 </script>
@@ -161,12 +202,12 @@ import Bar from '@/components/daisyUI/Bar.vue'
                         <div class="flex-grow">
                             <span class="label">发表评论</span>
                             <div class="flex flex-row h-24">
-                                <textarea class="textarea resize-none w-full textarea-bordered textarea-primary" placeholder="请输入评论内容"></textarea>
+                                <textarea id="commentText" class="textarea resize-none w-full textarea-bordered textarea-primary" placeholder="请输入评论内容"></textarea>
                                 <div class="self-center ml-4">
 
 <!-- 需要tooken发表评论，需要发送代码 -->
 
-                                    <button class="btn btn-primary w-16 h-24">发表</button>
+                                    <button class="btn btn-primary w-16 h-24" @click="upComment">发表</button>
                                 </div>
                             </div>
                         </div>
