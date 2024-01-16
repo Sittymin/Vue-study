@@ -121,13 +121,60 @@ import Bar from '@/components/daisyUI/Bar.vue'
         <Bar></Bar>
         <div class="flex flex-col h-full items-center" :style="{ backgroundImage: 'url(http://172.30.179.248:10001' + pressListReturn.rows[0].cover + ')'}">
             <!-- 新闻内容 -->
-            <div v-html="pressListReturn.rows[0].content" class="text-black dark:text-white w-3/4 glass p-10 bg-opacity-30 dark:bg-opacity-90 bg-slate-200 dark:bg-slate-800"></div>
-            <!-- 评论部分 -->
+            <div class="text-black dark:text-white w-3/4 glass p-10 bg-opacity-30 dark:bg-opacity-90 bg-slate-200 dark:bg-slate-800">
+                <div v-html="pressListReturn.rows[0].content" ></div>
+                <!-- 其他元素 -->
+
+<!-- 需要点击点赞交互 -->
+
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+                </svg>
+                {{ pressListReturn.rows[0].likeNum }}
+            </div>
+            <!-- 加载评论部分 -->
             <div v-for="(comment, index) of comments.rows"  class="flex flex-col w-3/4">
                 <label class="form-control w-full text-black dark:text-white bg-slate-200 dark:bg-slate-800">
-                    <span class="label">{{ comment.userName }}</span>
-                    <p>{{ comment.content }}</p>
+                    <div class="flex flex-row justify-between mx-10">
+                        <div>
+                            <span class="label">{{ comment.userName }}</span>
+                            <p>{{ comment.content }}</p>
+                        </div>
+                        <!-- 右部分 -->
+                        <div class="flex flex-row justify-between self-center">
+                            {{ comment.likeNum }}
+
+<!-- 需要点击点赞交互 -->
+
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+                            </svg>
+                        </div>
+                    </div>
                     <div class="divider"></div>
+                </label>
+            </div>
+            <!-- 发表评论部分 -->
+            <div class="flex flex-col w-3/4">
+                <label class="form-control text-black dark:text-white bg-slate-200 dark:bg-slate-800">
+                    <div class="flex flex-row mx-10">
+                        <div class="flex-grow">
+                            <span class="label">发表评论</span>
+                            <div class="flex flex-row h-24">
+                                <textarea class="textarea resize-none w-full textarea-bordered textarea-primary" placeholder="请输入评论内容"></textarea>
+                                <div class="self-center ml-4">
+
+<!-- 需要tooken发表评论，需要发送代码 -->
+
+                                    <button class="btn btn-primary w-16 h-24">发表</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 右部分 -->
+
+                    </div>
+                    <div class="divider"></div>
+
                 </label>
             </div>
         </div>

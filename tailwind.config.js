@@ -13,8 +13,8 @@ export default {
   ],
   daisyui: {
     themes: [
-      "dark",
-      "light"
+      "light",
+      // "dark"
     ]
   },
   variants: {

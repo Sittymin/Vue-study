@@ -57,7 +57,7 @@
 
 <template>
     <div class="hero h-68 flex-col" v-for="(row, index) of pressListReturn.rows" :key="index">
-        <div v-if="row.title" class="hero-content border-4 border-slate-300 hover:border-indigo-300 bg-slate-200 dark:hover:border-indigo-700 dark:bg-slate-800 dark:border-slate-600 w-full my-4 mr-4 p-6 rounded-lg justify-between">
+        <div v-if="row.title" class="hero-content border-4 border-slate-300 hover:border-indigo-300 bg-slate-200 dark:hover:border-indigo-700 dark:bg-slate-800 dark:border-slate-600 w-11/12 my-4 mr-4 p-6 rounded-lg  justify-between">
             <!-- 左部分 -->
             <div class="flex flex-row">
                 <img :src="'http://172.30.179.248:10001' + row.cover" class="h-52 rounded-lg shadow-2xl" />
@@ -86,8 +86,8 @@
         </div>
         <!-- 加载占位符 -->
         <div v-else class="flex flex-col h-68 w-full items-center">
-            <div class="skeleton w-4/5 h-52 rounded-lg my-4"></div>
-            <div class="skeleton w-4/5 h-52 rounded-lg my-4"></div>
+            <div class="skeleton w-11/12 h-64 rounded-lg border-4 my-4 mr-10 ml-6 p-0"></div>
+            <div class="skeleton w-11/12 h-64 rounded-lg border-4 my-4 mr-10 ml-6 p-0"></div>
         </div>
     </div>
 </template>
