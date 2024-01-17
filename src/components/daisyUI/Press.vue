@@ -1,7 +1,8 @@
 <!-- 获取新闻列表 -->
 <script setup lang="ts">
-    import { reactive, onMounted } from 'vue';
-    import { setTheme } from '@/components/daisyUI/setTheme';
+    import { reactive, onMounted, ref } from 'vue';
+    import AD from '@/script/AD'
+    import type { ApiResponse } from '@/../env.d';
     interface PressListReturn {
         code: number,
         msg: string,
@@ -38,6 +39,8 @@
         }]
     })
 
+    const ADs = ref<ApiResponse | null>(null)
+
     onMounted(() => {
         fetch("http://172.30.179.248:10001/prod-api/press/press/list", {
             method: 'GET',
@@ -52,11 +55,24 @@
         .catch(err => {
             alert("新闻列表请求失败" + JSON.stringify(err));
         });
+        AD(2).then(data => {
+            ADs.value = data
+        }).catch(err => {
+            alert("广告请求失败" + JSON.stringify(err));
+        })
     })
 </script>
 
 <template>
-    <div class="hero h-68 flex-col" v-for="(row, index) of pressListReturn.rows" :key="index">
+    <div class="flex flex-row justify-center my-3">
+        <div class="carousel carousel-center w-3/4 p-4 space-x-4 bg-neutral rounded-box">
+            <div class="carousel-item" v-if="ADs" v-for="(ad, index) of ADs.rows" :key=index>
+                <img class="rounded-box" :src="`http://172.30.179.248:10001${ad.advImg}`"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero flex-col" v-for="(row, index) of pressListReturn.rows" :key="index">
         <div v-if="row.title" class="hero-content border-4 border-slate-300 hover:border-indigo-300 bg-slate-200 dark:hover:border-indigo-700 dark:bg-slate-800 dark:border-slate-600 w-11/12 my-4 mr-4 p-6 rounded-lg  justify-between">
             <!-- 左部分 -->
             <div class="flex flex-row">

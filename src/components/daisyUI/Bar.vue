@@ -4,10 +4,11 @@ import themeButton from '@/components/daisyUI/Theme.vue'    //主题按钮
 import Login from '@/components/daisyUI/LoginBox.vue'      //登录框
 import Register from '@/components/daisyUI/RegisterBox.vue'
 
+let token = ref<string | null>(null)
 
 const isLoginBox = ref(false);
 const isRegisterBox = ref(false);
-let token = ref<string | null>(null)
+
 
 const LoginClicked = () => {
     isLoginBox.value = true;
@@ -29,21 +30,11 @@ const Layout = () => {
     localStorage.removeItem("localToken");
     location.reload()
 }
-
-const handleToken = (returntoken: string) => {
-    token.value = returntoken;
-    // console.log("可以了" + token.value);
-};
-
 onMounted(() => {
     if(localStorage.getItem("localToken") !== null)
         token.value = localStorage.getItem("localToken");
 });
 
-onBeforeUnmount(() => {
-    if(token.value !== null)
-        localStorage.setItem("localToken", token.value)
-});
 
 </script>
 
@@ -64,7 +55,7 @@ onBeforeUnmount(() => {
                     <li v-if="token !== null"><a>个人信息</a></li>
                     <li v-if="token !== null"><a @click="Layout">退出登录</a></li>
                     <li v-if="token === null"><a @click="LoginClicked">登录</a></li>
-                    <Login v-if="isLoginBox" @close="LoginClosed" @ReturnToken="handleToken"></Login>
+                    <Login v-if="isLoginBox" @close="LoginClosed"></Login>
                     <li v-if="token === null"><a @click="RegisterClicked">注册</a></li>
                     <Register v-if="isRegisterBox" @close="RegisterClose"></Register>
                 </ul>
