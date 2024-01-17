@@ -6,7 +6,8 @@ import { defineEmits } from 'vue';
 interface Emits {
     (event: 'close'): void;
 }
-
+let username = ref<string>('')
+let password = ref<string>('')
 let loginbox = ref<HTMLDialogElement | null>(null);
 let errorbox = ref<HTMLDialogElement | null>(null);
 
@@ -14,7 +15,6 @@ const emit: Emits = defineEmits()
 
 const LoginBoxClose = () => {
     emit('close')
-    console.log("close触发")
 }
 
 
@@ -49,16 +49,10 @@ function login() {
         username: string,   // 用户名
         password: string    // 密码
     } = {
-        username: '',
-        password: ''
+        username: username.value,
+        password: password.value
     };
     if (loginbox.value !== null) {
-        // 获取表单数据
-        const formdata = loginbox.value.querySelectorAll('input');
-        // 遍历表单数据
-        formdata.forEach((input: HTMLInputElement) => {
-            loginsubmitdata[input.name as keyof typeof loginsubmitdata] = input.value;
-        });
         // 发送请求
         if (loginsubmitdata.username !== '' &&
             loginsubmitdata.password !== '') {
@@ -107,30 +101,28 @@ onMounted(() => {
             <button>close</button>
         </form>
     </dialog>
-    <dialog ref="loginbox" class="modal">
-        <div class="modal-box max-w-xs glass">
-            <label class="form-control w-full max-w-xs">
-                <span class="label-text">用户名</span>
-                <input  type="text" name="username" placeholder="请输入用户名" required
-                        class="input input-bordered input-sm w-full mb-3">
-                <span class="label-text">密码</span>
-                <input  type="password" name="password" placeholder="密码" required
-                        class="input input-bordered input-sm w-full">
-                <span class="text-label-alt mb-3"><a>没有帐号？</a></span>
-                <div class="flex flex-row justify-end">
-                    <form method="dialog">
-                        <button class="btn btn-sm" @click="LoginBoxClose"
+    <dialog ref="loginbox">
+        <el-form style="position: fixed; top: 50%; left: 50%; transform:translateY(-50%) translateX(-50%); z-index: 50">
+            <div class="modal-box max-w-xs glass">
+                <label class="form-control w-full max-w-xs">
+                    <el-form-item >用户名</el-form-item>
+                    <el-input v-model="username"/>
+                    <el-form-item class="label-text">密码</el-form-item>
+                    <el-input  v-model="password" type="password"/>
+                    <el-form-item class="text-label-alt mb-3"><a>没有帐号？</a></el-form-item>
+                    <div class="flex flex-row justify-end">
+                        <el-button @click="LoginBoxClose"
                         >
                             关闭
-                        </button>
-                    </form>
-                    <button @click="login"
-                            class="btn btn-sm mx-3"
-                    >
-                        登录
-                    </button>
-                </div>
-            </label>
-        </div>
+                        </el-button>
+                        <el-button @click="login"
+                                style="margin-left: 12px; margin-right: 12px;"
+                        >
+                            登录
+                        </el-button>
+                    </div>
+                </label>
+            </div>
+        </el-form>
     </dialog>
 </template>

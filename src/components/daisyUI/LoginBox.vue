@@ -14,6 +14,7 @@ const emit: Emits = defineEmits()
 
 const LoginBoxClose = () => {
     emit('close')
+    console.log("close触发")
 }
 
 

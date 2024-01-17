@@ -39,6 +39,8 @@ onMounted(() => {
 </script>
 
 <template>
+    <Login v-if="isLoginBox" @close="LoginClosed"></Login>
+    <Register v-if="isRegisterBox" @close="RegisterClose"></Register>
     <div class="navbar sticky top-0 bg-slate-300 dark:bg-slate-800 z-50">
         <div class="flex-1">
             <RouterLink to="/" class="btn btn-ghost text-xl">主页</RouterLink>
@@ -55,9 +57,7 @@ onMounted(() => {
                     <li v-if="token !== null"><a>个人信息</a></li>
                     <li v-if="token !== null"><a @click="Layout">退出登录</a></li>
                     <li v-if="token === null"><a @click="LoginClicked">登录</a></li>
-                    <Login v-if="isLoginBox" @close="LoginClosed"></Login>
                     <li v-if="token === null"><a @click="RegisterClicked">注册</a></li>
-                    <Register v-if="isRegisterBox" @close="RegisterClose"></Register>
                 </ul>
             </div>
         </div>

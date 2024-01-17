@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { ref, onMounted, defineEmits } from 'vue';
+    import { ref, onMounted, defineEmits, reactive } from 'vue';
     let registerbox = ref<HTMLDialogElement | null>(null);
 
     const emit = defineEmits();
@@ -7,36 +7,29 @@
         emit("close")
     }
 
+    let userName = ref('');
+    let password = ref('');
+    let phonenumber = ref('');
+    let sex = ref('');
+    let avatar = ref('');
+    let nickName = ref('');
+    let email = ref('');
+    let idCard = ref('');
+
+    let registersubmitdata = reactive({
+        userName: userName.value,   // 用户名
+        password: password.value,   // 密码
+        phonenumber: phonenumber.value,    // 手机号
+        sex: sex.value,        // 性别
+        avatar: avatar.value,    // 头像(可选)
+        nickName: nickName.value,  // 昵称(可选)
+        email: email.value,     // 邮箱(可选)
+        idCard: idCard.value     // 身份证(可选)
+        })
 
     function register() {
-        let registersubmitdata: {
-            avatar?: string,    // 头像(可选)
-            userName: string,   // 用户名
-            nickName?: string,  // 昵称(可选)
-            password: string,   // 密码
-            phonenumber: string,    // 手机号
-            sex: string,        // 性别
-            email?: string,     // 邮箱(可选)
-            idCard?: string     // 身份证(可选)
-        } = {
-            userName: '',
-            password: '',
-            phonenumber: '',
-            sex: ''
-        }
+
         if(registerbox.value !== null) {
-            const formdata = registerbox.value.querySelectorAll('input');
-            // 遍历表单数据
-            formdata.forEach((input: HTMLInputElement) => {
-                // 判断是否为单选框
-                if (input.type === 'radio') {
-                    if (input.checked) {
-                        registersubmitdata[input.name as keyof typeof registersubmitdata] = input.value;
-                    }
-                } else {
-                    registersubmitdata[input.name as keyof typeof registersubmitdata] = input.value;
-                }
-            });
             // 发送请求
             if( registersubmitdata.userName !== '' &&
                 registersubmitdata.password !== '' &&
@@ -72,34 +65,33 @@
     })
 </script>
 <template>
-    <dialog ref="registerbox" class="modal">
-        <div class="modal-box max-w-xs glass">
-            <label class="form-control w-full max-w-xs">
-                <span class="flex justify-center mb-3">注册</span>
-                <input  type="text" name="userName" placeholder="用户名" required
-                        class="input input-bordered input-sm w-full mb-3">
-                <input  type="text" name="nickName" placeholder="昵称"
-                        class="input input-bordered input-sm w-full mb-3">
-                <input  type="password" name="password" placeholder="密码" required
-                        class="input input-bordered input-sm w-full mb-3">
-                <input  type="tel" name="phonenumber" placeholder="电话号码" required
-                        class="input input-bordered input-sm w-full mb-3">
-                <div class="flex flex-row content-center justify-center mb-3">
-                    <label>性别：</label>
-                    <input class="radio mx-3" type="radio" name="sex" id="man" value="0" required>
-                    <label for="man">男</label>
-                    <input class="radio mx-3" type="radio" name="sex" id="woman" value="1" required>
-                    <label for="woman">女</label>
-                </div>
-                <input  type="email" name="email" placeholder="邮箱"
-                        class="input input-bordered input-sm w-full mb-3">
-                <input  type="text" name="idCard" placeholder="身份证"
-                        class="input input-bordered input-sm w-full mb-3">
-                <div class="flex flex-row justify-end">
-                    <button class="btn btn-sm" @click="RegisterClose">关闭</button>
-                    <button class="btn btn-sm mx-3" @click="register">注册</button>
-                </div>
-            </label>
-        </div>
+    <dialog ref="registerbox">
+        <el-form style="position: fixed; top: 50%; left: 50%; transform:translateY(-50%) translateX(-50%); z-index: 50">
+            <div class="modal-box max-w-xs glass">
+                <label class="form-control w-full max-w-xs">
+                    <span class="flex justify-center mb-3">注册</span>
+                    <el-input  type="text" v-model="registersubmitdata.userName" placeholder="用户名" required
+                            style="margin-bottom: 0.75rem;"/>
+                    <el-input  type="text" v-model="registersubmitdata.nickName" placeholder="昵称"
+                            style="margin-bottom: 0.75rem;"/>
+                    <el-input  type="password" v-model="registersubmitdata.password" placeholder="密码" required
+                            style="margin-bottom: 0.75rem;"/>
+                    <el-input  type="tel" v-model="registersubmitdata.phonenumber" placeholder="电话号码" required
+                            style="margin-bottom: 0.75rem;"/>
+                    <el-radio-group v-model="registersubmitdata.sex" class="flex flex-row content-center justify-center mb-3">
+                        <el-radio label="0" required>男</el-radio>
+                        <el-radio label="1" required>女</el-radio>
+                    </el-radio-group>
+                    <el-input  type="email" v-model="registersubmitdata.email" placeholder="邮箱"
+                            style="margin-bottom: 0.75rem;"/>
+                    <el-input  type="text" v-model="registersubmitdata.idCard" placeholder="身份证"
+                            style="margin-bottom: 0.75rem;"/>
+                    <div style="display: flex;flex-direction: row;justify-content: flex-end;">
+                        <el-button @click="RegisterClose">关闭</el-button>
+                        <el-button style="margin-left: 0.75rem; margin-right: 0.75rem" @click="register">注册</el-button>
+                    </div>
+                </label>
+            </div>
+        </el-form>
     </dialog>
 </template>

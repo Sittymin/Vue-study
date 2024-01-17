@@ -2,7 +2,7 @@ export default function commentLike (id: number): Promise<boolean> {
     return new Promise((resolve, rejects) => {
         const token = localStorage.getItem("localToken");
         if (!token) {
-            console.log("没有登录");
+            alert("没有登录");
             rejects(false);
         } else {
             fetch(`http://172.30.179.248:10001/prod-api/press/pressComment/like/${id}`, {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute, } from 'vue-router';
 import { reactive, onMounted, ref } from 'vue';
-import Bar from '@/components/daisyUI/Bar.vue'
+import Bar from '@/components/elementPlus/Bar.vue'
 import pressLike from '@/script/pressLike'
 import commentLike from '@/script/commentLike'
 
@@ -217,4 +217,4 @@ onMounted(() => {
             </div>
         </div>
     </div>
-</template>@/script/pressLike@/script/commentLike
+</template>

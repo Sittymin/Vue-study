@@ -2,7 +2,7 @@ export default function pressLike(id: number): Promise<boolean> {
     return new Promise((resolve, reject) => {
         const token = localStorage.getItem("localToken");
         if (!token) {
-            console.log("没有登录");
+            alert("没有登录");
             reject(false);
         } else {
             fetch(`http://172.30.179.248:10001/prod-api/press/press/like/${id}`, {
